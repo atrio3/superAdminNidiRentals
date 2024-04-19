@@ -1,0 +1,169 @@
+.booking-data-container {
+  background-color: #f5f5f5;
+  margin: 20px;
+  padding: 20px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  border-radius: 14px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.booking-data-title {
+  color: #333333;
+  margin-bottom: 50px;
+}
+
+.form-container label {
+  font-size: 13px;
+}
+
+.form-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  width: calc(14% - 10px);
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.form-container button {
+  padding: 8px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.form-container button:hover {
+  background-color: #45a049;
+}
+
+.booking-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.booking-table th,
+.booking-table td {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: left;
+}
+
+.booking-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.booking-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.booking-table tbody tr:hover {
+  background-color: #ddd;
+}
+
+.booking-table td:last-child,
+.booking-table th:last-child {
+  width: 10%;
+}
+
+.booking-table td button {
+  padding: 5px 15px;
+  /* background-color: #ff3333; */
+  color: red;
+  border: none;
+  border-radius: 6px;
+  border: 1px solid red;
+  cursor: pointer;
+  margin: 2px;
+}
+
+.booking-table td button:hover {
+  background-color: #cc0000;
+  color: white;
+}
+
+.table-container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.booking-table thead,
+.booking-table tbody {
+  display: block;
+}
+
+.booking-table tbody {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-container label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.filter-container select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* Styling for the search input and button */
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-container input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  margin-left: 15px;
+}
+
+.search-container button {
+  padding: 8px;
+  /* background-color: #4caf50; */
+  color: #000000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 5px;
+  border: 1px solid #cccccc;
+}
+
+.search-container button:hover {
+  background-color: #cccccc;
+  color: blue;
+}
