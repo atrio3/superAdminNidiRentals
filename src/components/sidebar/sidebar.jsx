@@ -43,8 +43,9 @@ function Sidebar({ open, toggleSidebar }) {
             <BsPeopleFill className='icon' /> Logout
           </button>
         </li>
-        <li>powered by: Atrio Technologies</li>
+        
       </ul>
+     <span>powered by: Atrio Technologies</span> 
     </aside>
   );
 }
