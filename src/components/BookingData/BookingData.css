@@ -111,7 +111,7 @@
 
 .booking-table thead,
 .booking-table tbody {
-  display: block;
+  display: contents;
 }
 
 .booking-table tbody {
