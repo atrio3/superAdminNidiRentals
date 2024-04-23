@@ -107,6 +107,7 @@ const UpdatedBooking = () => {
               <th>Drop-off Date</th>
               <th>Time</th>
               <th>Total Paid Amount</th>
+              <th>Driving ID Image</th>
             </tr>
           </thead>
           <tbody>
@@ -125,6 +126,11 @@ const UpdatedBooking = () => {
                 <td>{formatDate(booking.dropOffDate)}</td>
                 <td>{formatTime(booking.time)}</td>
                 <td>₹{booking.rentAmount}</td>
+                <tr>
+                  <td>
+                    <a href={booking.image_Url}>Click Here</a>
+                  </td>
+                </tr>
               </tr>
             ))}
           </tbody>
