@@ -57,6 +57,7 @@
 }
 
 .booking-table {
+  background-color: white;
   border-collapse: collapse;
   width: 100%;
 }

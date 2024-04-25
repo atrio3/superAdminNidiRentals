@@ -367,7 +367,7 @@ const BookingData = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((userDetails, index) => (
+          {filteredData.slice().reverse().map((userDetails, index) => (
             <tr key={userDetails.id}>
               <td>{index + 1}</td>
               <td>{userDetails.name}</td>
