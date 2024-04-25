@@ -81,6 +81,7 @@ const UpdatedBooking = () => {
     { label: "Name", key: "name" },
     { label: "Email", key: "email" },
     { label: "Address", key: "address" },
+    { label: "Location-Selected", key: "userLocation" },
     { label: "Phone no", key: "tel" },
     { label: "Driving ID", key: "drivingID" },
     { label: "Selected Vehicle", key: "vehicle_name" },
@@ -124,6 +125,7 @@ const UpdatedBooking = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Address</th>
+              <th>Location-Selected</th>
               <th>Phone No.</th>
               <th>Driving ID</th>
               <th>Selected Vehicle</th>
@@ -146,6 +148,7 @@ const UpdatedBooking = () => {
                   <td>{booking.name}</td>
                   <td>{booking.email}</td>
                   <td>{booking.address}</td>
+                  <td>{booking.userLocation}</td>
                   <td>{booking.tel}</td>
                   <td>{booking.drivingID}</td>
                   <td>{booking.vehicle_name}</td>
