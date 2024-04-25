@@ -3,6 +3,7 @@ import { ref, onValue, push, set, remove } from "firebase/database";
 import { database } from "../../firebase";
 import "./BookingData.css";
 import { Edit, Delete, Search } from "@mui/icons-material"; // Assuming Search icon exists
+import { CSVLink } from "react-csv";
 
 const BookingData = () => {
   const [tableData, setTableData] = useState([]);
@@ -164,6 +165,23 @@ const BookingData = () => {
     tableData.forEach((user) => uniqueLocations.add(user.userLocation));
     return Array.from(uniqueLocations);
   };
+
+  const headers = [
+    { label: "Name", key: "name" },
+    { label: "Email", key: "email" },
+    { label: "Address", key: "address" },
+    { label: "Location Selected", key: "userLocation" },
+    { label: "Phone no", key: "tel" },
+    { label: "Driving ID", key: "drivingID" },
+    { label: "Selected Vehicle", key: "vehicle_name" },
+    { label: "Vehicle Price", key: "vehicle_price" },
+    { label: "Vehicle Category", key: "vehicle_category" },
+    { label: "Pickup Date", key: "pickUpDate" },
+    { label: "Drop-off Date", key: "dropOffDate" },
+    { label: "Time", key: "time" },
+    { label: "Total Paid Amount", key: "rentAmount" },
+    { label: "Driving ID Image", key: "image_Url" },
+  ];
 
   return (
     <div className="booking-data-container">
@@ -333,16 +351,25 @@ const BookingData = () => {
             </option>
           ))}
         </select>
-        <div className="search-container">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by Name"
-          />
-          <button onClick={() => setSearchQuery("")}>
-            <Search />
-          </button>
+        <div className="search-export-container">
+          <div className="search-container">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by Name"
+            />
+            <button onClick={() => setSearchQuery("")}>
+              <Search />
+            </button>
+          </div>
+          {filteredData.length != 0 && (
+            <div className="export-container">
+              <CSVLink data={filteredData} headers={headers}>
+                <button>Export CSV</button>
+              </CSVLink>
+            </div>
+          )}
         </div>
       </div>
       <table className="booking-table">
@@ -367,37 +394,40 @@ const BookingData = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredData.slice().reverse().map((userDetails, index) => (
-            <tr key={userDetails.id}>
-              <td>{index + 1}</td>
-              <td>{userDetails.name}</td>
-              <td>{userDetails.email}</td>
-              <td>{userDetails.address}</td>
-              <td>{userDetails.userLocation}</td>
-              <td>{userDetails.tel}</td>
-              <td>{userDetails.drivingID}</td>
-              <td>{userDetails.vehicle_name}</td>
-              <td>₹{userDetails.vehicle_price}</td>
-              <td>{userDetails.vehicle_category}</td>
-              <td>{formatDate(userDetails.pickUpDate)}</td>
-              <td>{formatDate(userDetails.dropOffDate)}</td>
-              <td>{formatTime(userDetails.time)}</td>
-              <td>₹{userDetails.rentAmount}</td>
-              <tr>
+          {filteredData
+            .slice()
+            .reverse()
+            .map((userDetails, index) => (
+              <tr key={userDetails.id}>
+                <td>{index + 1}</td>
+                <td>{userDetails.name}</td>
+                <td>{userDetails.email}</td>
+                <td>{userDetails.address}</td>
+                <td>{userDetails.userLocation}</td>
+                <td>{userDetails.tel}</td>
+                <td>{userDetails.drivingID}</td>
+                <td>{userDetails.vehicle_name}</td>
+                <td>₹{userDetails.vehicle_price}</td>
+                <td>{userDetails.vehicle_category}</td>
+                <td>{formatDate(userDetails.pickUpDate)}</td>
+                <td>{formatDate(userDetails.dropOffDate)}</td>
+                <td>{formatTime(userDetails.time)}</td>
+                <td>₹{userDetails.rentAmount}</td>
+                <tr>
+                  <td>
+                    <a href={userDetails.image_Url}>Click Here</a>
+                  </td>
+                </tr>
                 <td>
-                  <a href={userDetails.image_Url}>Click Here</a>
+                  <button onClick={() => handleEdit(userDetails.id)}>
+                    <Edit />
+                  </button>
+                  <button onClick={() => handleDelete(userDetails.id)}>
+                    <Delete />
+                  </button>
                 </td>
               </tr>
-              <td>
-                <button onClick={() => handleEdit(userDetails.id)}>
-                  <Edit />
-                </button>
-                <button onClick={() => handleDelete(userDetails.id)}>
-                  <Delete />
-                </button>
-              </td>
-            </tr>
-          ))}
+            ))}
         </tbody>
       </table>
     </div>
