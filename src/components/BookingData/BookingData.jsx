@@ -396,7 +396,6 @@ const BookingData = () => {
         </thead>
         <tbody>
           {filteredData
-            .slice()
             .reverse()
             .map((userDetails, index) => (
               <tr key={userDetails.id}>

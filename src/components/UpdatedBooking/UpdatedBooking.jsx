@@ -140,7 +140,6 @@ const UpdatedBooking = () => {
           </thead>
           <tbody>
             {filteredData
-              .slice()
               .reverse()
               .map((booking, index) => (
                 <tr key={booking.id}>
