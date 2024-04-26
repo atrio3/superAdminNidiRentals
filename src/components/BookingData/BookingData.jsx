@@ -372,10 +372,12 @@ const BookingData = () => {
           )}
         </div>
       </div>
+      <div className="booking">
       <table className="booking-table">
         <thead>
           <tr>
             <th>#</th>
+            <th>Time</th>
             <th>Name</th>
             <th>Email</th>
             <th>Address</th>
@@ -387,7 +389,6 @@ const BookingData = () => {
             <th>Vehicle Category</th>
             <th>Pickup Date</th>
             <th>Drop-off Date</th>
-            <th>Time</th>
             <th>Total Paid Amount</th>
             <th>DrivingID Image</th>
             <th>Actions</th>
@@ -400,6 +401,7 @@ const BookingData = () => {
             .map((userDetails, index) => (
               <tr key={userDetails.id}>
                 <td>{index + 1}</td>
+                <td>{formatTime(userDetails.time)}</td>
                 <td>{userDetails.name}</td>
                 <td>{userDetails.email}</td>
                 <td>{userDetails.address}</td>
@@ -411,7 +413,6 @@ const BookingData = () => {
                 <td>{userDetails.vehicle_category}</td>
                 <td>{formatDate(userDetails.pickUpDate)}</td>
                 <td>{formatDate(userDetails.dropOffDate)}</td>
-                <td>{formatTime(userDetails.time)}</td>
                 <td>₹{userDetails.rentAmount}</td>
                 <tr>
                   <td>
@@ -430,6 +431,7 @@ const BookingData = () => {
             ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

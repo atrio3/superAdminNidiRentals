@@ -1,5 +1,5 @@
 import React from "react";
-import { BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill } from "react-icons/bs";
+import { BsGrid1X2Fill, BsFillArchiveFill, BsPeopleFill, BsFillInboxesFill ,BsFillPersonCheckFill, BsBoxArrowLeft} from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import "./sidebar.css";
 import { signOut } from "firebase/auth";
@@ -27,7 +27,13 @@ function Sidebar() {
       <ul className="sidebar-menu">
         <li className="sidebar-menu-item">
           <Link to="/booking" className="sidebar-link">
-            <BsFillGrid3X3GapFill className="icon" /> Bookings
+            <BsPeopleFill className="icon" /> Bookings
+          </Link>
+        </li>
+
+        <li className="sidebar-menu-item">
+          <Link to="/completed" className="sidebar-link">
+            <BsFillPersonCheckFill className="icon" /> Completed Bookings
           </Link>
         </li>
 
@@ -38,14 +44,14 @@ function Sidebar() {
         </li>
 
         <li className="sidebar-menu-item">
-          <Link to="/completed" className="sidebar-link">
-            <BsFillArchiveFill className="icon" /> Completed Bookings
+          <Link to="/allbookings" className="sidebar-link">
+            <BsFillInboxesFill className="icon" /> All Bookings
           </Link>
         </li>
       </ul>
 
       <button className="logout-button" onClick={handleLogout}>
-        <BsPeopleFill className="icon" /> Logout
+        <BsBoxArrowLeft className="icon" /> Logout
       </button>
 
       <div className="sidebar-footer"><hr />Powered by: Atrio technologies</div>

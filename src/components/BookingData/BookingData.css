@@ -125,6 +125,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .filter-container label {
@@ -169,15 +170,15 @@
   color: blue;
 }
 
-.search-export-container{
+.search-export-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap:30px;
+  gap: 30px;
   margin: 20px 15px;
 }
 
-.export-container button{
+.export-container button {
   padding: 15px 10px;
   border-radius: 6px;
   background-color: rgb(60, 235, 60);
@@ -186,5 +187,9 @@
   border: none;
   font-size: 0.7rem;
   cursor: pointer;
-  border:2px solid black;
+  border: 2px solid black;
+}
+
+.booking {
+  overflow-x: auto;
 }

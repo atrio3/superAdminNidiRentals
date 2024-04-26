@@ -96,7 +96,7 @@ const UpdatedBooking = () => {
 
   return (
     <div className="updated-bookings">
-      <h2>Updated Bookings</h2>
+      <h2>Completed Bookings</h2>
       <div className="search-export-container">
         <div className="search-container">
           <input
@@ -122,6 +122,7 @@ const UpdatedBooking = () => {
           <thead>
             <tr>
               <th>#</th>
+              <th>Time</th>
               <th>Name</th>
               <th>Email</th>
               <th>Address</th>
@@ -133,7 +134,6 @@ const UpdatedBooking = () => {
               <th>Vehicle Category</th>
               <th>Pickup Date</th>
               <th>Drop-off Date</th>
-              <th>Time</th>
               <th>Total Paid Amount</th>
               <th>Driving ID Image</th>
             </tr>
@@ -145,6 +145,7 @@ const UpdatedBooking = () => {
               .map((booking, index) => (
                 <tr key={booking.id}>
                   <td>{index + 1}</td>
+                  <td>{formatTime(booking.time)}</td>
                   <td>{booking.name}</td>
                   <td>{booking.email}</td>
                   <td>{booking.address}</td>
@@ -156,7 +157,6 @@ const UpdatedBooking = () => {
                   <td>{booking.vehicle_category}</td>
                   <td>{formatDate(booking.pickUpDate)}</td>
                   <td>{formatDate(booking.dropOffDate)}</td>
-                  <td>{formatTime(booking.time)}</td>
                   <td>₹{booking.rentAmount}</td>
                   <tr>
                     <td>
