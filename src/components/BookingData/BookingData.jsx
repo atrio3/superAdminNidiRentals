@@ -432,10 +432,10 @@ const BookingData = () => {
                   </td>
                 </tr>
                 <td>
-                  <button onClick={() => handleEdit(userDetails.vehicle_id)}>
+                  <button onClick={() => handleEdit(userDetails.id)}>
                     <Edit />
                   </button>
-                  <button onClick={() => handleDelete(userDetails.vehicle_id)}>
+                  <button onClick={() => handleDelete(userDetails.id)}>
                     <Delete />
                   </button>
                 </td>
