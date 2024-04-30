@@ -22,6 +22,7 @@ const BookingData = () => {
     time: "",
     rentAmount: "",
     image_Url: "",
+    vehicle_id: "",
   });
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -90,6 +91,7 @@ const BookingData = () => {
       time: "",
       rentAmount: "",
       image_Url: "",
+      vehicle_id: "",
     });
   };
 
@@ -119,6 +121,7 @@ const BookingData = () => {
       time: "",
       rentAmount: "",
       image_Url: "",
+      vehicle_id: "",
     });
   };
 
@@ -196,6 +199,17 @@ const BookingData = () => {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Name"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Vehicle Id:</label>
+          <input
+            type="Number"
+            id="vehicle_id"
+            name="vehicle_id"
+            value={formData.vehicle_id}
+            onChange={handleInputChange}
+            placeholder="vehicle_id"
           />
         </div>
         <div className="form-group">
@@ -396,7 +410,6 @@ const BookingData = () => {
         </thead>
         <tbody>
           {filteredData
-            .reverse()
             .map((userDetails, index) => (
               <tr key={userDetails.id}>
                 <td>{index + 1}</td>
@@ -419,10 +432,10 @@ const BookingData = () => {
                   </td>
                 </tr>
                 <td>
-                  <button onClick={() => handleEdit(userDetails.id)}>
+                  <button onClick={() => handleEdit(userDetails.vehicle_id)}>
                     <Edit />
                   </button>
-                  <button onClick={() => handleDelete(userDetails.id)}>
+                  <button onClick={() => handleDelete(userDetails.vehicle_id)}>
                     <Delete />
                   </button>
                 </td>
