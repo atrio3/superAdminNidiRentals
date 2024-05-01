@@ -141,7 +141,10 @@ const BookingData = () => {
   };
 
   const handleDelete = async (id) => {
-    await remove(ref(database, `UserDetails/${id}`));
+    const shouldDelete = window.confirm("Are you sure you want to delete?");
+    if (shouldDelete) {
+      await remove(ref(database, `UserDetails/${id}`));
+    }
   };
 
   useEffect(() => {
