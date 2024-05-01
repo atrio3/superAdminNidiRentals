@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import { ref, onValue, push, set, remove } from "firebase/database";
 import { database } from "../../firebase";
 import "./BookingData.css";
@@ -30,6 +30,8 @@ const BookingData = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterPickupDate, setFilterPickupDate] = useState("");
+  const formRef = useRef(null); 
+
 
   useEffect(() => {
     const dbRef = ref(database);
@@ -112,6 +114,7 @@ const BookingData = () => {
     setFormData(editData);
     setEditMode(true);
     setEditId(id);
+    formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const handleUpdate = async () => {
@@ -202,7 +205,7 @@ const BookingData = () => {
   return (
     <div className="booking-data-container">
       <h2 className="booking-data-title">Booking Data:</h2>
-      <div className="form-container">
+      <div className="form-container" ref={formRef}>
         <div className="form-group">
           <label htmlFor="name">Name:</label>
           <input
