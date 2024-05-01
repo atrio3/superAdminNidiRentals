@@ -156,8 +156,8 @@
 
 .search-container button {
   padding: 8px;
-  /* background-color: #4caf50; */
-  color: #000000;
+  background-color: lightblue;
+  color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -166,7 +166,6 @@
 }
 
 .search-container button:hover {
-  background-color: #cccccc;
   color: blue;
 }
 
@@ -187,9 +186,26 @@
   border: none;
   font-size: 0.7rem;
   cursor: pointer;
-  border: 2px solid black;
 }
 
 .booking {
   overflow-x: auto;
+}
+.pickup-filter {
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pickup-filter label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.pickup-filter input[type="date"] {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
 }

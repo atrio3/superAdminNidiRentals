@@ -29,6 +29,7 @@ const BookingData = () => {
   const [filterLocation, setFilterLocation] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterPickupDate, setFilterPickupDate] = useState("");
 
   useEffect(() => {
     const dbRef = ref(database);
@@ -68,6 +69,17 @@ const BookingData = () => {
       setFilteredData(tableData);
     }
   }, [searchQuery, tableData]);
+
+  useEffect(() => {
+    if (filterPickupDate !== "") {
+      const filtered = tableData.filter(
+        (user) => user.pickUpDate === filterPickupDate
+      );
+      setFilteredData(filtered);
+    } else {
+      setFilteredData(tableData);
+    }
+  }, [filterPickupDate, tableData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -185,6 +197,7 @@ const BookingData = () => {
     { label: "Total Paid Amount", key: "rentAmount" },
     { label: "Driving ID Image", key: "image_Url" },
   ];
+
 
   return (
     <div className="booking-data-container">
@@ -365,6 +378,14 @@ const BookingData = () => {
             </option>
           ))}
         </select>
+        <div className="pickup-filter">
+          <label htmlFor="pickupDateFilter">Filter by Pickup Date:</label>
+        <input
+          type="date"
+          id="pickupDateFilter"
+          value={filterPickupDate}
+          onChange={(e) => setFilterPickupDate(e.target.value)}
+        /></div>
         <div className="search-export-container">
           <div className="search-container">
             <input
