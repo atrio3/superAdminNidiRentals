@@ -1,8 +1,8 @@
-import React, { useState, useEffect ,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ref, onValue, push, set, remove } from "firebase/database";
 import { database } from "../../firebase";
 import "./BookingData.css";
-import { Edit, Delete, Search } from "@mui/icons-material"; // Assuming Search icon exists
+import { Edit, Delete, Search } from "@mui/icons-material";
 import { CSVLink } from "react-csv";
 
 const BookingData = () => {
@@ -17,6 +17,7 @@ const BookingData = () => {
     vehicle_name: "",
     vehicle_price: "",
     vehicle_category: "",
+    vehicleNumber: "",
     pickUpDate: "",
     dropOffDate: "",
     time: "",
@@ -30,8 +31,7 @@ const BookingData = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterPickupDate, setFilterPickupDate] = useState("");
-  const formRef = useRef(null); 
-
+  const formRef = useRef(null);
 
   useEffect(() => {
     const dbRef = ref(database);
@@ -100,6 +100,7 @@ const BookingData = () => {
       vehicle_name: "",
       vehicle_price: "",
       vehicle_category: "",
+      vehicleNumber: "",
       pickUpDate: "",
       dropOffDate: "",
       time: "",
@@ -131,6 +132,7 @@ const BookingData = () => {
       vehicle_name: "",
       vehicle_price: "",
       vehicle_category: "",
+      vehicleNumber: "",
       pickUpDate: "",
       dropOffDate: "",
       time: "",
@@ -147,15 +149,29 @@ const BookingData = () => {
     }
   };
 
-  useEffect(() => {
-    const tableRows = document.querySelectorAll(".booking-table tbody tr");
+  const handleClearEmptyRows = async () => {
+    const cleanedData = tableData.filter((user) => {
+      const fields = Object.values(user);
+      const emptyFieldCount = fields.filter(
+        (field) => !field || (typeof field === "string" && field.trim() === "")
+      ).length;
 
-    tableRows.forEach((row) => {
-      row.addEventListener("click", function () {
-        this.classList.toggle("expanded-row");
-      });
+      return emptyFieldCount < 2;
     });
-  }, []);
+
+    setTableData(cleanedData);
+    setFilteredData(cleanedData);
+
+    // Update the data in Firebase
+    const dbRef = ref(database, "UserDetails");
+    await set(dbRef, cleanedData);
+
+    alert(
+      `${
+        tableData.length - cleanedData.length
+      } rows with empty data were removed!`
+    );
+  };
 
   const formatTime = (timeString) => {
     const timeParts = timeString.split(":");
@@ -197,14 +213,14 @@ const BookingData = () => {
     { label: "Selected Vehicle", key: "vehicle_name" },
     { label: "Vehicle Price", key: "vehicle_price" },
     { label: "Vehicle Category", key: "vehicle_category" },
+    { label: "Vehicle Number", key: "vehicleNumber" },
     { label: "Pickup Date", key: "pickUpDate" },
-    { label: "Drop-off Date", key: "dropOffDate" },
-    { label: "Time", key: "time" },
-    { label: "Total Paid Amount", key: "rentAmount" },
-    { label: "Driving ID Image", key: "image_Url" },
+    { label: "Dropoff Date", key: "dropOffDate" },
+    { label: "Pickup Time", key: "time" },
+    { label: "Rent Amount", key: "rentAmount" },
+    { label: "Image URL", key: "image_Url" },
+    { label: "Vehicle ID", key: "vehicle_id" },
   ];
-
-
   return (
     <div className="booking-data-container">
       <h2 className="booking-data-title">Booking Data:</h2>
@@ -310,13 +326,26 @@ const BookingData = () => {
         </div>
         <div className="form-group">
           <label htmlFor="vehicle_category">Vehicle Category:</label>
-          <input
-            type="text"
+          <select
             id="vehicle_category"
             name="vehicle_category"
             value={formData.vehicle_category}
             onChange={handleInputChange}
-            placeholder="Vehicle Category"
+          >
+            <option value="">Select</option>
+            <option value="Scooty">Scooty</option>
+            <option value="Bike">Bike</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="vehicleNumber">Vehicle Number:</label>
+          <input
+            type="text"
+            id="vehicleNumber"
+            name="vehicleNumber"
+            value={formData.vehicleNumber}
+            onChange={handleInputChange}
+            placeholder="Vehicle Number"
           />
         </div>
         <div className="form-group">
@@ -386,12 +415,13 @@ const BookingData = () => {
         </select>
         <div className="pickup-filter">
           <label htmlFor="pickupDateFilter">Filter by Pickup Date:</label>
-        <input
-          type="date"
-          id="pickupDateFilter"
-          value={filterPickupDate}
-          onChange={(e) => setFilterPickupDate(e.target.value)}
-        /></div>
+          <input
+            type="date"
+            id="pickupDateFilter"
+            value={filterPickupDate}
+            onChange={(e) => setFilterPickupDate(e.target.value)}
+          />
+        </div>
         <div className="search-export-container">
           <div className="search-container">
             <input
@@ -412,32 +442,37 @@ const BookingData = () => {
             </div>
           )}
         </div>
+        <div className="action-buttons">
+          <button className="clear-btn" onClick={handleClearEmptyRows}>
+            Clear Empty Data
+          </button>
+        </div>
       </div>
       <div className="booking">
-      <table className="booking-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Time</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Location-Selected</th>
-            <th>Phone No.</th>
-            <th>Driving ID</th>
-            <th>Selected Vehicle</th>
-            <th>Vehicle Price</th>
-            <th>Vehicle Category</th>
-            <th>Pickup Date</th>
-            <th>Drop-off Date</th>
-            <th>Total Paid Amount</th>
-            <th>DrivingID Image</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData
-            .map((userDetails, index) => (
+        <table className="booking-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Time</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Location-Selected</th>
+              <th>Phone No.</th>
+              <th>Driving ID</th>
+              <th>Selected Vehicle</th>
+              <th>Vehicle Price</th>
+              <th>Vehicle Category</th>
+              <th>Vehicle Number</th>
+              <th>Pickup Date</th>
+              <th>Drop-off Date</th>
+              <th>Total Paid Amount</th>
+              <th>DrivingID Image</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((userDetails, index) => (
               <tr key={userDetails.id}>
                 <td>{index + 1}</td>
                 <td>{formatTime(userDetails.time)}</td>
@@ -450,6 +485,7 @@ const BookingData = () => {
                 <td>{userDetails.vehicle_name}</td>
                 <td>₹{userDetails.vehicle_price}</td>
                 <td>{userDetails.vehicle_category}</td>
+                <td>{userDetails.vehicleNumber}</td>
                 <td>{formatDate(userDetails.pickUpDate)}</td>
                 <td>{formatDate(userDetails.dropOffDate)}</td>
                 <td>₹{userDetails.rentAmount}</td>
@@ -468,8 +504,8 @@ const BookingData = () => {
                 </td>
               </tr>
             ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
       </div>
     </div>
   );

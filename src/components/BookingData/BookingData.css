@@ -1,3 +1,4 @@
+/* Main container for booking data */
 .booking-data-container {
   background-color: #f5f5f5;
   margin: 20px;
@@ -7,31 +8,30 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
+/* Title styling */
 .booking-data-title {
   color: #333333;
-  margin-bottom: 50px;
+  margin-bottom: 30px; /* Reduced margin for better spacing */
 }
 
-.form-container label {
-  font-size: 13px;
-}
-
+/* Form styling */
 .form-container {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
+.form-container label {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
 .form-group {
   width: calc(14% - 10px);
   margin-right: 10px;
   margin-bottom: 10px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
 }
 
 .form-group input {
@@ -42,6 +42,7 @@
   box-sizing: border-box;
 }
 
+/* Button styling for form */
 .form-container button {
   padding: 8px 20px;
   background-color: #4caf50;
@@ -56,6 +57,7 @@
   background-color: #45a049;
 }
 
+/* Table styling */
 .booking-table {
   background-color: white;
   border-collapse: collapse;
@@ -64,7 +66,7 @@
 
 .booking-table th,
 .booking-table td {
-  border: 1px solid black;
+  border: 1px solid #ccc; /* Softened the borders */
   padding: 10px;
   text-align: left;
 }
@@ -75,25 +77,20 @@
 }
 
 .booking-table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #f9f9f9; /* Lightened the even row background */
 }
 
 .booking-table tbody tr:hover {
   background-color: #ddd;
 }
 
-.booking-table td:last-child,
-.booking-table th:last-child {
-  width: 10%;
-}
-
+/* Buttons inside the table */
 .booking-table td button {
   padding: 5px 15px;
-  /* background-color: #ff3333; */
   color: red;
-  border: none;
-  border-radius: 6px;
   border: 1px solid red;
+  background-color: white;
+  border-radius: 6px;
   cursor: pointer;
   margin: 2px;
 }
@@ -103,6 +100,7 @@
   color: white;
 }
 
+/* Styling for table container */
 .table-container {
   background-color: #ffffff;
   border-radius: 10px;
@@ -110,16 +108,13 @@
   overflow: hidden;
 }
 
-.booking-table thead,
-.booking-table tbody {
-  display: contents;
-}
-
+/* Table rows scroll styling */
 .booking-table tbody {
   max-height: 400px;
   overflow-y: auto;
 }
 
+/* Filter container styling */
 .filter-container {
   margin-bottom: 20px;
   display: flex;
@@ -140,7 +135,7 @@
   font-size: 16px;
 }
 
-/* Styling for the search input and button */
+/* Search and filter input */
 .search-container {
   display: flex;
   align-items: center;
@@ -166,12 +161,12 @@
 }
 
 .search-container button:hover {
-  color: blue;
+  background-color: #48a0f6; /* Slightly darker blue on hover */
 }
 
+/* Container for export buttons */
 .search-export-container {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   gap: 30px;
   margin: 20px 15px;
@@ -188,9 +183,12 @@
   cursor: pointer;
 }
 
+/* Overflowing booking data */
 .booking {
   overflow-x: auto;
 }
+
+/* Pickup filter */
 .pickup-filter {
   margin: 20px;
   display: flex;
@@ -208,4 +206,51 @@
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 16px;
+}
+.clear-btn {
+  background-color: #ff4d4d; /* Soft red for the button */
+  color: white;
+  border: none;
+  padding: 10px 25px; /* Increased padding for better proportions */
+  font-size: 16px; /* Increased font size for better readability */
+  font-weight: bold;
+  border-radius: 8px; /* Slightly rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.clear-btn:hover {
+  background-color: #e04343; /* Darker red on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover for better effect */
+}
+
+.clear-btn:active {
+  background-color: #d03939; /* Darker red when pressed */
+  transform: scale(1); /* Maintain size on active press */
+}
+
+#vehicle_category {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: 90%;
+  background-color: #ffffff;
+  color: #333;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+#vehicle_category option {
+  font-size: 16px;
+  color: #333;
+}
+
+#vehicle_category:hover {
+  border-color: #4caf50;
+}
+
+#vehicle_category:focus {
+  outline: none;
+  border-color: #007bff;
 }
