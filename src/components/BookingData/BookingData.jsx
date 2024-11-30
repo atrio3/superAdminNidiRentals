@@ -174,9 +174,18 @@ const BookingData = () => {
   };
 
   const formatTime = (timeString) => {
+    if (!timeString || timeString.indexOf(":") === -1) {
+      return ""; // Return empty string if time is not available or not in correct format
+    }
+
     const timeParts = timeString.split(":");
     const hours = parseInt(timeParts[0], 10);
     const minutes = parseInt(timeParts[1], 10);
+
+    // Handle invalid hour or minute values
+    if (isNaN(hours) || isNaN(minutes)) {
+      return "";
+    }
 
     let amOrPm = "AM";
     let formattedHours = hours;
