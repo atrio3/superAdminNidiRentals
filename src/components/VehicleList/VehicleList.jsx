@@ -28,6 +28,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from "@mui/material/Modal";
 import EditForm from "./EditForm";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 const Locations = [
   { value: "KJC KOTHANUR", label: "KJC KOTHANUR" },
@@ -35,6 +37,13 @@ const Locations = [
   { value: "KEMPAPURA", label: "KEMPAPURA" },
   { value: "ITPL", label: "ITPL" },
   { value: "MARTHAHALLI", label: "MARTHAHALLI" },
+];
+
+const vehicleTypes = [
+  { value: "All", label: "All" },
+  { value: "Bike", label: "Bike" },
+  { value: "Scooty", label: "Scooty" },
+  { value: "Car", label: "Car" },
 ];
 
 const style = {
@@ -67,6 +76,7 @@ export default function VehicleList() {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [vehicleType, setVehicleType] = useState("All");
 
   const handleOpen = () => setOpen(true);
   const handleEditOpen = () => setEditOpen(true);
@@ -79,7 +89,10 @@ export default function VehicleList() {
 
   const getVehicles = async () => {
     const data = await getDocs(empCollectionRef);
-    const formattedData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const formattedData = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
     setRows(formattedData);
     setFilteredRows(formattedData); // Set filtered rows initially to all rows
   };
@@ -116,21 +129,35 @@ export default function VehicleList() {
     getVehicles();
   };
 
-  const filterData = (selectedLocation) => {
+  const filterData = (selectedLocation, selectedType = vehicleType) => {
+    let filtered = rows;
     if (selectedLocation) {
-      const filtered = rows.filter((row) => row.location && row.location.includes(selectedLocation));
-      setFilteredRows(filtered);
-    } else {
-      setFilteredRows(rows); // Reset filtered rows to all rows when no location is selected
+      filtered = filtered.filter(
+        (row) => row.location && row.location.includes(selectedLocation)
+      );
     }
+    if (selectedType && selectedType !== "All") {
+      filtered = filtered.filter(
+        (row) =>
+          row.type &&
+          row.type.toLowerCase().includes(selectedType.toLowerCase())
+      );
+    }
+    setFilteredRows(filtered);
   };
+
+  // Update filter when vehicleType changes
+  useEffect(() => {
+    filterData(null, vehicleType);
+    // eslint-disable-next-line
+  }, [vehicleType, rows]);
 
   const editData = (name, location, quantity, id) => {
     const data = {
       name: name,
       Location: location,
       Quantity: quantity,
-      id: id
+      id: id,
     };
     setFormData(data);
     handleEditOpen();
@@ -161,8 +188,20 @@ export default function VehicleList() {
       </div>
 
       {filteredRows.length > 0 && (
-        <Paper sx={{ width: "97%", overflow: "hidden", padding: "12px", margin: "10px" }}>
-          <Typography gutterBottom variant="h5" component="div" sx={{ padding: "30px" }}>
+        <Paper
+          sx={{
+            width: "97%",
+            overflow: "hidden",
+            padding: "12px",
+            margin: "10px",
+          }}
+        >
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{ padding: "30px" }}
+          >
             Vehicles List
           </Typography>
           <Divider />
@@ -171,36 +210,62 @@ export default function VehicleList() {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={Locations.map(option => option.value)}
+              options={Locations.map((option) => option.value)}
               sx={{ width: 300 }}
-              onChange={(e, selectedLocation) => filterData(selectedLocation)}
+              onChange={(e, selectedLocation) =>
+                filterData(selectedLocation, vehicleType)
+              }
               renderInput={(params) => (
                 <TextField {...params} size="small" label="Search Location" />
               )}
             />
-
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
+            <Select
+              value={vehicleType}
+              onChange={(e) => setVehicleType(e.target.value)}
+              size="small"
+              sx={{ width: 180, background: "#fff" }}
+            >
+              {vehicleTypes.map((type) => (
+                <MenuItem key={type.value} value={type.value}>
+                  {type.label}
+                </MenuItem>
+              ))}
+            </Select>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1 }}
+            ></Typography>
           </Stack>
           <Box height={10} />
           <TableContainer>
-            <Table stickyHeader aria-label="sticky table" >
+            <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="left" style={{ ...headerCellStyle, minWidth: "150px" }}>
+                  <TableCell
+                    align="left"
+                    style={{ ...headerCellStyle, minWidth: "150px" }}
+                  >
                     Name
                   </TableCell>
-                  <TableCell align="left" style={{ ...headerCellStyle, minWidth: "100px" }}>
+                  <TableCell
+                    align="left"
+                    style={{ ...headerCellStyle, minWidth: "100px" }}
+                  >
                     Location / Quantity
                   </TableCell>
                   {/* <TableCell align="left" style={{ ...headerCellStyle, minWidth: "150px" }}>
                     Location
                   </TableCell> */}
-                  <TableCell align="left" style={{ ...headerCellStyle, minWidth: "100px" }}>
+                  <TableCell
+                    align="left"
+                    style={{ ...headerCellStyle, minWidth: "100px" }}
+                  >
                     Action
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody >
+              <TableBody>
                 {filteredRows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
@@ -211,17 +276,18 @@ export default function VehicleList() {
                         tabIndex={-1}
                         key={row.id}
                       >
-                        <TableCell align="left" style={cellStyle}>{row.name}</TableCell>
                         <TableCell align="left" style={cellStyle}>
-                          {Array.isArray(row.quantity) && Array.isArray(row.location) ? (
-                            row.location.map((loc, index) => (
-                              <div key={index}>
-                                {loc}: {row.quantity[index]}
-                              </div>
-                            ))
-                          ) : (
-                            ""
-                          )}
+                          {row.name}
+                        </TableCell>
+                        <TableCell align="left" style={cellStyle}>
+                          {Array.isArray(row.quantity) &&
+                          Array.isArray(row.location)
+                            ? row.location.map((loc, index) => (
+                                <div key={index}>
+                                  {loc}: {row.quantity[index]}
+                                </div>
+                              ))
+                            : ""}
                         </TableCell>
                         {/* <TableCell align="left" style={cellStyle}>
                           {Array.isArray(row.location) ? row.location.join(", ") : ""}
@@ -235,7 +301,14 @@ export default function VehicleList() {
                                 cursor: "pointer",
                               }}
                               className="cursor-pointer"
-                              onClick={() => editData(row.name, row.location, row.quantity, row.id)}
+                              onClick={() =>
+                                editData(
+                                  row.name,
+                                  row.location,
+                                  row.quantity,
+                                  row.id
+                                )
+                              }
                             />
                             <DeleteIcon
                               style={{

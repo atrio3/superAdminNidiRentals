@@ -28,6 +28,7 @@ const BookingData = () => {
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
   const [filterLocation, setFilterLocation] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterPickupDate, setFilterPickupDate] = useState("");
@@ -35,15 +36,11 @@ const BookingData = () => {
 
   useEffect(() => {
     const dbRef = ref(database);
-
     onValue(dbRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const userDetailsArray = Object.entries(data.UserDetails || {}).map(
-          ([key, value]) => ({
-            id: key,
-            ...value,
-          })
+          ([key, value]) => ({ id: key, ...value })
         );
         setTableData(userDetailsArray);
       }
@@ -51,37 +48,29 @@ const BookingData = () => {
   }, []);
 
   useEffect(() => {
-    if (filterLocation !== "") {
-      const filtered = tableData.filter(
-        (user) => user.userLocation === filterLocation
-      );
-      setFilteredData(filtered);
-    } else {
-      setFilteredData(tableData);
+    let data = [...tableData];
+    if (filterLocation) {
+      data = data.filter((user) => user.userLocation === filterLocation);
     }
-  }, [filterLocation, tableData]);
-
-  useEffect(() => {
-    if (searchQuery !== "") {
-      const filtered = tableData.filter((user) =>
+    if (filterCategory) {
+      data = data.filter((user) => user.vehicle_category === filterCategory);
+    }
+    if (searchQuery) {
+      data = data.filter((user) =>
         user.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setFilteredData(filtered);
-    } else {
-      setFilteredData(tableData);
     }
-  }, [searchQuery, tableData]);
-
-  useEffect(() => {
-    if (filterPickupDate !== "") {
-      const filtered = tableData.filter(
-        (user) => user.pickUpDate === filterPickupDate
-      );
-      setFilteredData(filtered);
-    } else {
-      setFilteredData(tableData);
+    if (filterPickupDate) {
+      data = data.filter((user) => user.pickUpDate === filterPickupDate);
     }
-  }, [filterPickupDate, tableData]);
+    setFilteredData(data);
+  }, [
+    filterLocation,
+    filterCategory,
+    searchQuery,
+    filterPickupDate,
+    tableData,
+  ]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -344,6 +333,7 @@ const BookingData = () => {
             <option value="">Select</option>
             <option value="Scooty">Scooty</option>
             <option value="Bike">Bike</option>
+            <option value="Car">Car</option>
           </select>
         </div>
         <div className="form-group">
@@ -415,13 +405,26 @@ const BookingData = () => {
           value={filterLocation}
           onChange={(e) => setFilterLocation(e.target.value)}
         >
-          <option value="">Select Location</option>
+          <option value="">All</option>
           {getUniqueLocations().map((location, index) => (
             <option key={index} value={location}>
               {location}
             </option>
           ))}
         </select>
+
+        <label htmlFor="categoryFilter">Filter by Category:</label>
+        <select
+          id="categoryFilter"
+          value={filterCategory}
+          onChange={(e) => setFilterCategory(e.target.value)}
+        >
+          <option value="">All</option>
+          <option value="Scooty">Scooty</option>
+          <option value="Bike">Bike</option>
+          <option value="Car">Car</option>
+        </select>
+
         <div className="pickup-filter">
           <label htmlFor="pickupDateFilter">Filter by Pickup Date:</label>
           <input
@@ -443,7 +446,7 @@ const BookingData = () => {
               <Search />
             </button>
           </div>
-          {filteredData.length != 0 && (
+          {filteredData.length !== 0 && (
             <div className="export-container">
               <CSVLink data={filteredData} headers={headers}>
                 <button>Export CSV</button>
